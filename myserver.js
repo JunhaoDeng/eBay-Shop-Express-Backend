@@ -327,10 +327,56 @@ app.listen(5038, async () => {
   }
 });
 
+// app.get("/mongodb/getWishList", (request, response) => {
+//   database
+//     .collection(COLLECTIONNAME)
+//     .find({})
+//     .toArray((error, result) => {
+//       if (error) {
+//         response.status(500).send(error);
+//       } else {
+//         response.send(result);
+//       }
+//     });
+// });
+
+// app.get("/mongodb/getWishList", (request, response) => {
+//   const itemIdToFind = request.query.itemId;
+
+//   // 检查请求中是否包含有效的 itemId
+//   if (!itemIdToFind) {
+//     return response.status(400).send("Missing itemId parameter");
+//   }
+
+//   database
+//     .collection(COLLECTIONNAME)
+//     .find({ itemId: itemIdToFind })
+//     .toArray((error, result) => {
+//       if (error) {
+//         response.status(500).send(error);
+//       } else {
+//         response.send(result);
+//       }
+//     });
+// });
+
 app.get("/mongodb/getWishList", (request, response) => {
   database
     .collection(COLLECTIONNAME)
-    .find({})
+    .find({ itemId: { $exists: true } })
+    .toArray((error, result) => {
+      if (error) {
+        response.status(500).send(error);
+      } else {
+        response.send(result);
+      }
+    });
+});
+
+app.get("/mongodb/getWishList2", (request, response) => {
+  database
+    .collection(COLLECTIONNAME)
+    .find({ productId: { $exists: true } })
     .toArray((error, result) => {
       if (error) {
         response.status(500).send(error);
